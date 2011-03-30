@@ -42,3 +42,36 @@ li {
 	border: 3px solid #000;
 	min-height: 200px;
 }
+
+/* Yes, this is a bit redundant for now */
+#buttons {
+	display: inline-block;
+	width: 200px;
+}
+
+#stats {
+	display: inline-block;
+	width: 100px;
+}
+
+#graph {
+	display: inline-block;
+	height: 150px;
+	background-color: #def;
+	border: 1px solid #789;
+	overflow: hidden;
+	padding: 10px;
+	/* Dirty trick: Setting a crazy line height shifts my LIs down later */
+	line-height: 300px;
+}
+
+#graph li {
+	-webkit-transition-property: height;
+	-webkit-transition-duration: 500ms;
+	display: inline-block;
+	height: 0%;
+	width: 40px;
+	background-color: #789;
+	border: 1px solid #345;
+	margin: 5px 2px;
+}
