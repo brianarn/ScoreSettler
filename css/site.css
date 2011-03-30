@@ -17,18 +17,7 @@ h1 { font-size: 56px; line-height: 80px; }
 h2 { font-size: 35px; line-height: 50px; }
 h3 { font-size: 28px; line-height: 40px; }
 
-p {
-	margin: 10px 0px;
-}
-
-ul {
-	margin-left: 16px;
-}
-
-li {
-	list-style-type: square;
-	margin: 5px 0;
-}
+p { margin: 10px 0px; }
 
 #wrap {
 	width: 900px;
@@ -43,26 +32,38 @@ li {
 	min-height: 200px;
 }
 
-/* Yes, this is a bit redundant for now */
+#settler {
+	position: relative;
+	height: 320px;
+	margin: 0px 5px;
+}
+
 #buttons {
-	display: inline-block;
-	width: 200px;
+	position: absolute;
+	left: 0;
+	width: 375px;
 }
 
 #stats {
-	display: inline-block;
-	width: 100px;
+	position: absolute;
+	top: 0;
+	right: 0;
+	border: 1px solid black;
+	width: 490px;
+	height: 100px;
+	padding: 10px;
 }
 
 #graph {
-	display: inline-block;
+	position: absolute;
+	top: 130px;
+	right: 0px;
 	height: 150px;
+	width: 490px;
 	background-color: #def;
 	border: 1px solid #789;
 	overflow: hidden;
 	padding: 10px;
-	/* Dirty trick: Setting a crazy line height shifts my LIs down later */
-	line-height: 300px;
 }
 
 #graph li {
@@ -73,5 +74,35 @@ li {
 	width: 40px;
 	background-color: #789;
 	border: 1px solid #345;
-	margin: 5px 2px;
+	position: absolute;
+	bottom: 10px;
+	margin: 0px;
+	padding: 0px;
+}
+
+#graph .text {
+	position: absolute;
+	bottom: 0px;
+	left: 5px;
+	width: 30px;
+	text-align: center;
+}
+
+#buttons button {
+	background-color: #def;
+	border: 1px solid #789;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	margin: 3px;
+}
+
+#buttons button.smaller {
+	width: 85px;
+	height: 85px;
+}
+
+#buttons button.larger {
+	width: 115px;
+	height: 115px;
 }
