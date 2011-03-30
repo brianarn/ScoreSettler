@@ -1,11 +1,11 @@
 // settler.js
-// Last modified: 2011-03-29 21:05:43
+// Last modified: 2011-03-30 13:43:58
 //
 // Basically, it's what makes the page work
 
 // === Helpers that don't *need* to be in the DOM ready
-// rand: Simply return a random value in a range
-function rand(min, max) {
+// randInt: Simply return a random value in a range
+function randInt(min, max) {
 	// Input cleanup
 	if (!max) {
 		max = min;
@@ -15,11 +15,11 @@ function rand(min, max) {
 	max = parseInt(max, 10);
 
 	// Sanity checks
-	if (isNaN(min)) { throw new Error('rand: Invalid input'); }
+	if (isNaN(min)) { throw new Error('randInt: Invalid input'); }
 
 	// Calculate and return a random number in our range
-	return Math.floor(Math.random() * (max - min)) + min;
-} // function rand
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+} // function randInt
 
 // roll: Roll a number of dice with sides as specified
 function roll(num, sides) {
@@ -37,7 +37,7 @@ function roll(num, sides) {
 
 	// Roll the 'die', sum it up, hand it back
 	for (i = 0; i < num; ++i) {
-		total += rand(1,sides);
+		total += randInt(1,sides);
 	}
 	return total;
 } // function roll
