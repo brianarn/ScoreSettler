@@ -1,5 +1,5 @@
 // settler.js
-// Last modified: 2011-03-29 20:49:57
+// Last modified: 2011-03-29 21:05:43
 //
 // Basically, it's what makes the page work
 
@@ -46,7 +46,10 @@ function roll(num, sides) {
 document.addEventListener('DOMContentLoaded', function(){
 	var buttons = document.getElementById('buttons'),
 		sim = document.getElementById('sim'),
+		simInterval = document.getElementById('simInterval'),
 		stats = document.getElementById('stats'),
+		average = document.getElementById('average'),
+		common = document.getElementById('common'),
 		rolls = document.getElementById('rolls'),
 		graph = document.getElementById('graph'),
 		graphNodes = [],
@@ -59,6 +62,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	function updateVisual() {
 		var averages = [],
 			max = 0,
+			commonVal, commonCount,
 			avg, count, i;
 
 		// Determine our average scores
@@ -66,7 +70,11 @@ document.addEventListener('DOMContentLoaded', function(){
 			// See how often that occurs in scores
 			count = scores.filter(function(score) { return score == i; }).length;
 			avg = count / scores.length;
-			if (avg > max) { max = avg; }
+			if (avg > max) {
+				max = avg;
+				commonVal = i;
+				commonCount = scoreCount[i-2];
+			}
 			averages.push(avg);
 		}
 
@@ -83,6 +91,8 @@ document.addEventListener('DOMContentLoaded', function(){
 		});
 
 		// Update the stats
+		average.innerHTML = scores.reduce(function(prev, cur) { return prev + cur; }) / scores.length;
+		common.innerHTML = commonVal + ' @ ' + commonCount + (commonCount == 1 ? ' roll' : ' rolls');
 		rolls.innerHTML = scores.length > 5 ? scores.slice(scores.length - 5): scores;
 	} // function updateVisual
 
@@ -101,12 +111,18 @@ document.addEventListener('DOMContentLoaded', function(){
 		if (simInt) {
 			// Interval is going, disable
 			clearInterval(simInt);
+			simInt = null;
 			sim.innerHTML = 'Simulate Rolls';
 		} else {
-			// Start simulating
+			// See if we can get an interval value
+			var intval = parseInt(simInterval.value, 10);
+			if (isNaN(intval)) { throw new Error('Invalid interval specified'); }
+			if (intval <= 0) { throw new Error('Interval must be greater than zero'); }
+
+			// Start simulating!
 			simInt = setInterval(function(){
 				processScore(roll(2,6));
-			}, 500);
+			}, intval);
 			sim.innerHTML = 'Stop Simulating';
 		}
 	}, false);

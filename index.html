@@ -10,14 +10,21 @@
 		<div id="wrap">
 			<h1>ScoreSettler</h1>
 			<div id="description">
-				<p>There'll be a description here someday. Graph updates are currently totally nonsensical.</p>
+				<p>This is a first pass at a simple utility, designed at keeping track of score averages in Settlers of Catan.</p>
+				<p>You see, as my friends and I play, it often seems that 6 or 8 winds up coming out on top. If I ever finish this toy, I'll be able to use this during a game to keep track of dice averages.</p>
+				<p>I've also built in some simulation:</p>
+				Roll interval (in milliseconds):<input id="simInterval" type="number" value="500">
 				<button id="sim">Simulate Rolls</button>
 			</div> <!-- #description -->
 			<div id="settler">
 				<div id="buttons"></div> <!-- #buttons -->
 				<div id="stats">
-					<h2>Stats Someday</h2>
-					Last few rolls: <span id="rolls"></span>
+					<h3>Stats</h3>
+					<ul>
+						<li>Average: <span id="average"></span></li>
+						<li>Most common: <span id="common"></span></li>
+						<li>Last few rolls: <span id="rolls"></span></li>
+					</ul>
 				</div> <!-- #stats -->
 				<ul id="graph"></ul> <!-- #graph -->
 			</div> <!-- #settler -->
