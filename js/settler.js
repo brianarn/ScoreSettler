@@ -1,9 +1,10 @@
 // settler.js
-// Last modified: 2011-03-29 20:24:16
+// Last modified: 2011-03-29 20:49:57
 //
 // Basically, it's what makes the page work
 
-// Some utility functions
+// === Helpers that don't *need* to be in the DOM ready
+// rand: Simply return a random value in a range
 function rand(min, max) {
 	// Input cleanup
 	if (!max) {
@@ -13,64 +14,114 @@ function rand(min, max) {
 	min = parseInt(min, 10);
 	max = parseInt(max, 10);
 
-	// Sanity check
-	if (isNaN(min)) {
-		throw new Error('rand: Invalid input');
-	}
+	// Sanity checks
+	if (isNaN(min)) { throw new Error('rand: Invalid input'); }
 
-	return Math.floor(Math.random() * (max + 1)) + min;
-} // rand
+	// Calculate and return a random number in our range
+	return Math.floor(Math.random() * (max - min)) + min;
+} // function rand
+
+// roll: Roll a number of dice with sides as specified
+function roll(num, sides) {
+	var total = 0, i;
+
+	// Input cleanup
+	num = parseInt(num, 10);
+	sides = parseInt(sides, 10);
+
+	// Sanity checks
+	if (isNaN(num)) { throw new Error('Invalid number of die specified'); }
+	if (isNaN(sides)) { throw new Error('Invalid number of sides specified'); }
+	if (num < 1) { throw new Error('Need positive number of die'); }
+	if (sides < 2) { throw new Error('Need to specify at least two sides'); }
+
+	// Roll the 'die', sum it up, hand it back
+	for (i = 0; i < num; ++i) {
+		total += rand(1,sides);
+	}
+	return total;
+} // function roll
 
 // DOM Ready check
 document.addEventListener('DOMContentLoaded', function(){
 	var buttons = document.getElementById('buttons'),
+		sim = document.getElementById('sim'),
 		stats = document.getElementById('stats'),
 		rolls = document.getElementById('rolls'),
 		graph = document.getElementById('graph'),
 		graphNodes = [],
 		scoreCount = [],
 		scores = [],
-		node, i;
+		simInt, node, i;
 
 	// === Helpers!
 	// updateVisual: Simply just update DOM nodes as appropriate
 	function updateVisual() {
+		var averages = [],
+			max = 0,
+			avg, count, i;
+
+		// Determine our average scores
+		for (i = 2; i <= 12; ++i) {
+			// See how often that occurs in scores
+			count = scores.filter(function(score) { return score == i; }).length;
+			avg = count / scores.length;
+			if (avg > max) { max = avg; }
+			averages.push(avg);
+		}
+
+		// Scale our averages by the max,
+		// including our scaling up and conversion to pixel string
+		averages = averages.map(function(val) {
+			return ((val / max) * 150) + 'px';
+		});
+
 		// Update the graph
 		graphNodes.forEach(function(node, i) {
-			var curScore, count, avg;
-
-			// Determine what curScore this maps to
-			curScore = i + 2;
-
-			// See how often that occurs in scores
-			count = scores.filter(function(score) { return score == curScore; }).length;
-			avg = count / scores.length;
-
 			// Set a new height
-			node.style.height = (avg * 150) + 'px';
+			node.style.height = averages[i];
 		});
 
 		// Update the stats
 		rolls.innerHTML = scores.length > 5 ? scores.slice(scores.length - 5): scores;
 	} // function updateVisual
 
-	// === Events
-	// Listen for button clicks
-	buttons.addEventListener('click', function(e) {
-		var target = e.target, value;
-
-		// Dump out if it's not a button
-		if (target.nodeName.toUpperCase() != 'BUTTON') return;
-
-		// Confident that we're a button now, pull some stuff out
-		value = parseInt(target.innerHTML, 10);
-
+	function processScore(value) {
 		// Track our scoring
 		scores.push(value);
 		scoreCount[value-2]++;
 
 		// Update the graph
 		updateVisual();
+	} // function processScore
+
+	// === Events
+	// Simulate rolls
+	sim.addEventListener('click', function(e) {
+		if (simInt) {
+			// Interval is going, disable
+			clearInterval(simInt);
+			sim.innerHTML = 'Simulate Rolls';
+		} else {
+			// Start simulating
+			simInt = setInterval(function(){
+				processScore(roll(2,6));
+			}, 500);
+			sim.innerHTML = 'Stop Simulating';
+		}
+	}, false);
+
+	// Listen for Score Button clicks
+	buttons.addEventListener('click', function(e) {
+		var target = e.target, value;
+
+		// Dump out if it's not a button
+		if (target.nodeName.toUpperCase() != 'BUTTON') return;
+
+		// Confident that we're a button now,
+		// pull the value and process it
+		value = parseInt(target.innerHTML, 10);
+		processScore(value);
 	}, false);
 
 	// === Final Setup
