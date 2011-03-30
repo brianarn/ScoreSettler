@@ -69,7 +69,11 @@ p { margin: 10px 0px; }
 
 #graph li {
 	-webkit-transition-property: height;
+	-moz-transition-property: height;
+	-o-transition-property: height;
 	-webkit-transition-duration: 500ms;
+	-moz-transition-duration: 500ms;
+	-o-transition-duration: 500ms;
 	display: inline-block;
 	height: 0%;
 	width: 40px;
