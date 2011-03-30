@@ -1,5 +1,5 @@
 // settler.js
-// Last modified: 2011-03-29 20:10:52
+// Last modified: 2011-03-29 20:24:16
 //
 // Basically, it's what makes the page work
 
@@ -10,10 +10,8 @@ function rand(min, max) {
 		max = min;
 		min = 0;
 	}
-	console.log('min,max',min,max);
 	min = parseInt(min, 10);
 	max = parseInt(max, 10);
-	console.log('min,max',min,max);
 
 	// Sanity check
 	if (isNaN(min)) {
@@ -38,12 +36,22 @@ document.addEventListener('DOMContentLoaded', function(){
 	// updateVisual: Simply just update DOM nodes as appropriate
 	function updateVisual() {
 		// Update the graph
-		graphNodes.forEach(function(node) {
-			node.style.height = (rand(0,10) * 15) + 'px';
+		graphNodes.forEach(function(node, i) {
+			var curScore, count, avg;
+
+			// Determine what curScore this maps to
+			curScore = i + 2;
+
+			// See how often that occurs in scores
+			count = scores.filter(function(score) { return score == curScore; }).length;
+			avg = count / scores.length;
+
+			// Set a new height
+			node.style.height = (avg * 150) + 'px';
 		});
 
 		// Update the stats
-		rolls.innerHTML = 'Rolls: ' + scores;
+		rolls.innerHTML = scores.length > 5 ? scores.slice(scores.length - 5): scores;
 	} // function updateVisual
 
 	// === Events
@@ -100,13 +108,7 @@ document.addEventListener('DOMContentLoaded', function(){
 		buttons.appendChild(node);
 	}
 
-	// Listen for button clicks
-
-	/*
-	setInterval(function(){
-		graphNodes.forEach(function(node) {
-			node.style.height = (rand(0,10) * 10) + 'px';
-		});
-	}, 1000);
-	*/
+	// TESTING AIEEE
+	window.scoreCount = scoreCount;
+	window.scores = scores;
 }, false);
