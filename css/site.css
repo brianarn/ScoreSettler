@@ -101,9 +101,11 @@ p { margin: 10px 0px; }
 #buttons button.smaller {
 	width: 85px;
 	height: 85px;
+	font-size: 3em;
 }
 
 #buttons button.larger {
 	width: 115px;
 	height: 115px;
+	font-size: 4em;
 }
