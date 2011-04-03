@@ -1,5 +1,5 @@
 // settler.js
-// Last modified: 2011-03-30 13:43:58
+// Last modified: 2011-04-02 19:03:58
 //
 // Basically, it's what makes the page work
 
@@ -46,6 +46,7 @@ function roll(num, sides) {
 document.addEventListener('DOMContentLoaded', function(){
 	var buttons = document.getElementById('buttons'),
 		sim = document.getElementById('sim'),
+		reset = document.getElementById('reset'),
 		simInterval = document.getElementById('simInterval'),
 		stats = document.getElementById('stats'),
 		average = document.getElementById('average'),
@@ -105,6 +106,20 @@ document.addEventListener('DOMContentLoaded', function(){
 		updateVisual();
 	} // function processScore
 
+	function resetGame() {
+		// Clear some values
+		scoreCount = [0,0,0,0,0,0,0,0,0,0,0];
+		scores = [];
+		average.innerHTML = '';
+		common.innerHTML = '';
+		rolls.innerHTML = '';
+
+		// Reset our graph
+		graphNodes.forEach(function(node){
+			node.style.height = '0px';
+		});
+	} // resetGame
+
 	// === Events
 	// Simulate rolls
 	sim.addEventListener('click', function(e) {
@@ -126,6 +141,9 @@ document.addEventListener('DOMContentLoaded', function(){
 			sim.innerHTML = 'Stop Simulating';
 		}
 	}, false);
+
+	// Reset the game
+	reset.addEventListener('click', resetGame, false);
 
 	// Listen for Score Button clicks
 	buttons.addEventListener('click', function(e) {
