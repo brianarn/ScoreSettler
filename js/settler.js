@@ -1,5 +1,5 @@
 // settler.js
-// Last modified: 2011-04-02 19:03:58
+// Last modified: 2011-09-25 21:49:13
 //
 // Basically, it's what makes the page work
 
@@ -121,6 +121,22 @@ document.addEventListener('DOMContentLoaded', function(){
 	} // resetGame
 
 	// === Events
+	// Value changes
+	simInterval.addEventListener('blur', function(e){
+		// Grab our value
+		var val = parseInt(simInterval.value, 10),
+			min = parseInt(simInterval.getAttribute('min'), 10),
+			max = parseInt(simInterval.getAttribute('max'), 10);
+
+		// Sanity check the value to keep it in range
+		if (isNaN(val)) { val = 500; }
+		if (val < min) { val = min; }
+		if (val > max) { val = max; }
+
+		// Set value to ensure all is well
+		simInterval.value = val;
+	}, false);
+
 	// Simulate rolls
 	sim.addEventListener('click', function(e) {
 		if (simInt) {
